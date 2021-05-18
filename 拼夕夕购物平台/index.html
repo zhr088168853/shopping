@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>拼夕夕商品购物平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="icon" href="images/icon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" />
+    <script type="text/javascript">
+        //定义全局变量
+        var CurScreen = 1;      //当前显示的图像
+        var MaxScreen = 30;    //最多可切换的图像数
+        var timer = null;       //定时器变量
+        function $(id) {
+            return document.getElementById(id);
+        }
+        function switchPic() {               //切换图像函数，定时触发
+            if (CurScreen == MaxScreen) {    //切换到最后一张图像时再重复第一张图像
+                CurScreen = 1;
+            } else {
+                CurScreen++;
+            }
+            $("pic").src = "images/" + CurScreen + ".jpg";
+        }
+        function reStart() {     //重新开始，鼠标移出时触发
+            switchPic();         //切换下一张图
+            init();              //开始定时器
+        }
+        function pause() {       //暂停切换，鼠标悬停时触发
+            clearInterval(timer);//清除定时器
+        }
+        function init() {        //初始化函数，在body加载时触发
+            timer = setInterval('switchPic();', 2000);
+        }
+    </script>
+    <style>
+        table {
+            width: 100%;
+            height: 200px;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px;
+        }
+
+        .btn {
+            margin: 10px;
+            width: 50px;
+            height: 30px;
+            border: 0;
+            color: rgba(251, 249, 253, 0.952);
+        }
+
+        .myBtn {
+            margin: 20px;
+            width: 120px;
+            height: 45px;
+            border: 1px ridge #44FFEE;
+        }
+
+        #tab {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tab-tit {
+            font-size: 0;
+            width: 100%;
+        }
+
+        .tab-tit a {
+            display: inline-block;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            width: 25%;
+            text-align: center;
+            background: #e1e1e1;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .tab-tit .cur {
+            background: orange;
+            color: #fff;
+        }
+
+        .tab-con {
+            border: 2px solid #e7e7e7;
+        }
+    </style>
+</head>
+
+<body onload="init();">
+    <h1 align="center">
+        <font color="blue">拼夕夕商品购物平台</font>
+    </h1>
+    <div id="tab">
+        <div class="tab-tit">
+            <a href="javascript:;" @mousemove="curId=0" :class="{'cur':curId===0}">手机</a>
+            <a href="javascript:;" @mousemove="curId=1" :class="{'cur':curId===1}">鞋子</a>
+            <a href="javascript:;" @mousemove="curId=2" :class="{'cur':curId===2}">包包</a>
+            <a href="javascript:;" @mousemove="curId=3" :class="{'cur':curId===3}">男装</a>
+        </div>
+        <div align="center">
+            <!-- 动态的图片超链接 -->
+            <a href="#"><img id="pic" src="images/1.jpg" width="100%" height="800px" border="0" alt=""
+                    onmouseover="pause();" onmouseout="reStart();"></a>
+        </div>
+        <div class="tab-con">
+            <div v-show="curId===0" id="page1">
+                <div>
+                    <form name="myForm" method="post" action="">
+                        <table align="center" border="1" bordercolor="blue">
+                            <tr>
+                                <td><img src="images/mobile_1.jpg"><br>
+                                    <h4 name="h41">iPhone 6 32GB 金色 移动联通电信4G</h4>
+                                    <h5>￥ 2576.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(1,0)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(1,0)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected1[0]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/moblie_2.jpg"><br>
+                                    <h4 name="h412">OPPO R11 全网通 黑色版</h4>
+                                    <h5>￥ 2999.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(1,1)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(1,1)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected1[1]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/moblie_3.jpg"><br>
+                                    <h4 name="h43">Apple iPhone 6s Plus 32GB 金色 移动联通电信4G手机</h4>
+                                    <h5>￥ 3839.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(1,2)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(1,2)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected1[2]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="images/moblie_4.jpg"><br>
+                                    <h4 name="h44">小米 红米手机4X 全网通版 2GB内存 16GB 香槟金</h4>
+                                    <h5>￥ 699.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(1,3)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(1,3)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected1[3]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/moblie_5.jpg"><br>
+                                    <h4 name="h45">小米 红米手机4A 全网通版 2GB内存 16GB 玫瑰金</h4>
+                                    <h5>￥ 599.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(1,4)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(1,4)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected1[4]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/moblie_6.jpg">
+                                    <h4 name="h46">小米 红米手机4X 全网通版 2GB内存 16GB 樱花粉</h4>
+                                    <h5>￥ 699.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(1,5)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(1,5)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected1[5]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div v-show="curId===1" id="page2">
+                <div>
+                    <form name="myForm" method="post" action="">
+                        <table align="center" border="1" bordercolor="blue">
+                            <tr>
+                                <td><img src="images/xie1.jpg"><br>
+                                    <h4 name="h41">香港潮牌运动鞋男2021春季新款男士防滑防臭学生白色皮面跑步鞋子</h4>
+                                    <h5>￥ 159.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(2,0)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(2,0)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected2[0]"
+                                            onfocus="this.select()">
+                                    </div>
+                                </td>
+                                <td><img src="images/xie2.jpg"><br>
+                                    <h4 name="h412">小白鞋女鞋子2021新款夏季百搭网面透气网红白鞋潮鞋爆款运动板鞋</h4>
+                                    <h5>￥ 169.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(2,1)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(2,1)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected2[1]"
+                                            onfocus="this.select()">
+                                    </div>
+                                </td>
+                                <td><img src="images/xie3.jpg"><br>
+                                    <h4 name="h43">男鞋春季网面透气运动鞋男阿迪达斯特潮鞋夏季百搭跑步鞋休闲鞋子</h4>
+                                    <h5>￥ 136.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(2,2)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(2,2)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected2[2]"
+                                            onfocus="this.select()">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="images/xie4.jpg"><br>
+                                    <h4 name="h44">鞋子男夏季2021年新款厚底男士休闲鞋男鞋透气真皮男休闲皮鞋男</h4>
+                                    <h5>￥ 129.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(2,3)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(2,3)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected2[3]"
+                                            onfocus="this.select()">
+                                    </div>
+                                </td>
+                                <td><img src="images/xie5.jpg"><br>
+                                    <h4 name="h45">鞋子男春夏季2021年新款透气休闲运动鞋防臭潮流男鞋</h4>
+                                    <h5>￥ 189.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(2,4)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(2,4)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected2[4]"
+                                            onfocus="this.select()">
+                                    </div>
+                                </td>
+                                <td><img src="images/xie6.jpg">
+                                    <h4 name="h46">男鞋2021夏季新款小白鞋子休闲鞋韩版潮流板鞋透气潮鞋</h4>
+                                    <h5>￥ 199.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(2,5)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(2,5)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected2[5]"
+                                            onfocus="this.select()">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div v-show="curId===2" id="page3">
+                <div>
+                    <form name="myForm" method="post" action="">
+                        <table align="center" border="1" bordercolor="blue">
+                            <tr>
+                                <td><img src="images/bao1.jpg"><br>
+                                    <h4 name="h41">迪士尼官方 卡通可爱魔法师米奇斜挎包80周年新款包包</h4>
+                                    <h5>￥ 199.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(3,0)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(3,0)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected3[0]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/bao2.jpg"><br>
+                                    <h4 name="h412">2021大容量包包女包2020新款潮单肩百搭软皮韩版托特包手提斜挎包</h4>
+                                    <h5>￥ 139.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(3,1)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(3,1)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected3[1]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/bao3.jpg"><br>
+                                    <h4 name="h43">啄木鸟包包女2021新款夏女包潮单肩斜挎包高级感链条包时尚小方包</h4>
+                                    <h5>￥ 189.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(3,2)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(3,2)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected3[2]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="images/bao4.jpg"><br>
+                                    <h4 name="h44">托特包包女2020新款潮小众质感网红洋气2021高级感大容量单肩斜挎</h4>
+                                    <h5>￥ 159.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(3,3)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(3,3)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected3[3]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/bao5.jpg"><br>
+                                    <h4 name="h45">啄木鸟女包2021新款时尚小包女菱格质感小方包简约链条包包女斜挎</h4>
+                                    <h5>￥ 169.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(3,4)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(3,4)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected3[4]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/bao6.jpg">
+                                    <h4 name="h46">ALANPAINE真皮包包牛皮2021新款时尚腋下单肩链条斜挎小众轻奢女</h4>
+                                    <h5>￥ 1280.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(3,5)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(3,5)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected3[5]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div v-show="curId===3" id="page4">
+                <div>
+                    <form name="myForm" method="post" action="">
+                        <table align="center" border="1" bordercolor="blue">
+                            <tr>
+                                <td><img src="images/nan1.jpg"><br>
+                                    <h4 name="h41">骆驼男装圆领卫衣春薄款衣服套头长袖T恤印花街头宽松上衣潮流男</h4>
+                                    <h5>￥ 178.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(4,0)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(4,0)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected4[0]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/nan2.jpg"><br>
+                                    <h4 name="h412">夏季衬衫男修身商务正装白色长袖寸衬衣男士春装上衣韩版潮流短袖</h4>
+                                    <h5>￥ 69.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(4,1)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(4,1)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected4[1]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/nan3.jpg"><br>
+                                    <h4 name="h43">2021长袖t恤男士卫衣春装韩版秋衣学生潮流春季打底衫体恤上衣服</h4>
+                                    <h5>￥ 39.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(4,2)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(4,2)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected4[2]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="images/nan4.jpg"><br>
+                                    <h4 name="h44">ins超火的男士短袖t恤上衣半袖衣服韩版情侣夏装夏季潮流嘻哈宽松</h4>
+                                    <h5>￥ 33.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(4,3)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(4,3)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected4[3]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/nan5.jpg"><br>
+                                    <h4 name="h45">男士牛仔外套2021年春秋季新款韩版潮流帅气学生潮夹克男装上衣服</h4>
+                                    <h5>￥ 118.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(4,4)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(4,4)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected4[4]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                                <td><img src="images/nan6.jpg">
+                                    <h4 name="h46">半高领水貂绒毛衣男士秋冬季加绒加厚打底衫潮流线衣保暖冬装上衣</h4>
+                                    <h5>￥ 69.00</h5>
+                                    <div class="form-group">
+                                        <input type="button" value="+1" class="btn btn-primary" @click="plus(4,5)" />
+                                        <input type="button" value="-1" class="btn btn-primary"
+                                            @click="subtract(4,5)" />
+                                    </div>
+                                    <div>数量：<input type="text" size="2" v-model="isSelected4[5]"
+                                            onfocus="this.select()"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div align="center">
+            <div class="form-group">
+                <input type="button" class="myBtn btn-primary" value="查看购物车" @click="shoppingCart();">
+                <input type="button" class="myBtn btn-primary" value="收银台结算" @click="checkOut();">
+                <input type="button" class="myBtn btn-primary" value="清空购物车" @click="clearAll();">
+            </div>
+        </div>
+        <div align="center">
+            <strong>
+                <p>Copyright &copy;2021 @未经授权，不得抄袭</p>
+            </strong>
+        </div>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#tab',
+            data: {
+                curId: 0,
+
+                product1: ["iPhone 6 32GB 金色 移动联通电信4G", "OPPO R11 全网通 黑色版", "Apple iPhone 6s Plus 32GB 金色 移动联通电信4G手机", "小米 红米手机4X 全网通版 2GB内存 16GB 香槟金", "小米 红米手机4A 全网通版 2GB内存 16GB 玫瑰金", "小米 红米手机4X 全网通版 2GB内存 16GB 樱花粉"],
+                isSelected1: [0, 0, 0, 0, 0, 0],
+                price1: [2576.00, 2999.00, 3839.00, 699.00, 599.00, 699.00],
+
+                product2: ["香港潮牌运动鞋男2021春季新款男士防滑防臭学生白色皮面跑步鞋子", "小白鞋女鞋子2021新款夏季百搭网面透气网红白鞋潮鞋爆款运动板鞋", "男鞋春季网面透气运动鞋男阿迪达斯特潮鞋夏季百搭跑步鞋休闲鞋子", "鞋子男夏季2021年新款厚底男士休闲鞋男鞋透气真皮男休闲皮鞋男", "鞋子男春夏季2021年新款潮网面鞋薄款透气休闲运动鞋防臭潮流男鞋", "男鞋2021夏季新款小白鞋子男学生运动休闲鞋韩版潮流板鞋透气潮鞋"],
+                isSelected2: [0, 0, 0, 0, 0, 0],
+                price2: [159.00, 169.00, 136.00, 129.00, 189.00, 199.00],
+
+                product3: ["迪士尼官方 卡通可爱魔法师米奇斜挎包80周年新款包包", "2021大容量包包女包2020新款潮单肩百搭软皮韩版托特包手提斜挎包", "啄木鸟包包女2021新款夏女包潮单肩斜挎包高级感链条包时尚小方包", "托特包包女2020新款潮小众质感网红洋气2021高级感大容量单肩斜挎", "啄木鸟女包2021新款时尚小包女菱格质感小方包简约链条包包女斜挎", "ALANPAINE真皮包包牛皮2021新款时尚腋下单肩链条斜挎小众轻奢女"],
+                isSelected3: [0, 0, 0, 0, 0, 0],
+                price3: [199.00, 139.00, 189.00, 159.00, 169.00, 1280.00],
+
+                product4: ["骆驼男装圆领卫衣春薄款衣服套头长袖T恤印花街头宽松上衣潮流男", "夏季衬衫男修身商务正装白色长袖寸衬衣男士春装上衣韩版潮流短袖", "2021长袖t恤男士卫衣春装韩版秋衣学生潮流春季打底衫体恤上衣服", "ins超火的男士短袖t恤上衣半袖衣服韩版情侣夏装夏季潮流嘻哈宽松", "男士牛仔外套2021年春秋季新款韩版潮流帅气学生潮夹克男装上衣服", "半高领水貂绒毛衣男士秋冬季加绒加厚打底衫潮流线衣保暖冬装上衣"],
+                isSelected4: [0, 0, 0, 0, 0, 0],
+                price4: [178.00, 69.00, 39.00, 33.00, 118.00, 69.00]
+            },
+            methods: {
+                clearAll() {	//清空购物车
+                    this.isSelected1 = [0, 0, 0, 0, 0, 0];	//将商品的数量全部置0
+                    this.isSelected2 = [0, 0, 0, 0, 0, 0];
+                    this.isSelected3 = [0, 0, 0, 0, 0, 0];
+                    this.isSelected4 = [0, 0, 0, 0, 0, 0];
+                    alert("您的购物车已清空！");
+                },
+                checkOut() {	//收银台结算（收银台结算功能）
+                    var count1 = 0, count2 = 0, count3 = 0, count4 = 0;	//存放商品总价
+                    var total1 = 0, total2 = 0, total3 = 0, total4 = 0;	//存放商品总数
+                    var sumCount, sumTotal;
+                    //统计每页所选商品的数量
+                    for (var i = 0; i < this.isSelected1.length; i++) {	//计算选购的商品总数
+                        count1 += parseInt(this.isSelected1[i]);
+                    }
+                    for (var i = 0; i < this.isSelected2.length; i++) {	//计算选购的商品总数
+                        count2 += parseInt(this.isSelected2[i]);
+                    }
+                    for (var i = 0; i < this.isSelected3.length; i++) {	//计算选购的商品总数
+                        count3 += parseInt(this.isSelected3[i]);
+                    }
+                    for (var i = 0; i < this.isSelected4.length; i++) {	//计算选购的商品总数
+                        count4 += parseInt(this.isSelected4[i]);
+                    }
+                    //统计每页所选商品的总价（单价*数量）
+                    for (var i = 0; i < this.price1.length; i++) {	//计算选购的商品总价
+                        total1 += this.price1[i] * this.isSelected1[i];
+                    }
+                    for (var i = 0; i < this.price2.length; i++) {	//计算选购的商品总价
+                        total2 += this.price2[i] * this.isSelected2[i];
+                    }
+                    for (var i = 0; i < this.price3.length; i++) {	//计算选购的商品总价
+                        total3 += this.price3[i] * this.isSelected3[i];
+                    }
+                    for (var i = 0; i < this.price4.length; i++) {	//计算选购的商品总价
+                        total4 += this.price4[i] * this.isSelected4[i];
+                    }
+                    if ((sumCount = (count1 + count2 + count3 + count4)) != 0) {
+                        sumTotal = total1 + total2 + total3 + total4;   //计算总金额
+                        //跳转到支付页面（跳转到另一个html文件）
+                        window.location.href = "checkOut.html?valu1=" + encodeURI(sumCount) + "&valu2=" + encodeURI(sumTotal);
+                        //支付代码
+                        alert("您一共选购了" + sumCount + "件商品,商品的总价为：" + sumTotal + "  请去支付！");
+                    }
+                    else {
+                        alert("您的购物车为空，请选购商品！");
+                    }
+
+                },
+                shoppingCart() {	//查看每页选中商品的名称和价格（查看购物车）
+                    var selectList = "", index = 0;
+                    for (var j = 0; j < this.product1.length; j++) {
+                        if (this.isSelected1[j]) {	//如果商品被选中则获取该商品的名称和价格，分行显示
+                            index++;    //记录购物车中的商品序号
+                            index = index < 10 ? '0' + index : index;
+                            selectList += index + "————" + this.product1[j] + " * " + this.isSelected1[j] + ",价值为" + this.price1[j] * parseInt(this.isSelected1[j]) + "<br/>";
+                        }
+                    }
+                    for (var j = 0; j < this.product2.length; j++) {
+                        if (this.isSelected2[j]) {	//如果商品被选中则获取该商品的名称和价格，分行显示
+                            index++;    //记录购物车中的商品序号
+                            index = index < 10 ? '0' + index : index;
+                            selectList += index + "————" + this.product2[j] + " * " + this.isSelected2[j] + ",价值为" + this.price2[j] * parseInt(this.isSelected2[j]) + "<br/>";
+                        }
+                    }
+                    for (var j = 0; j < this.product3.length; j++) {
+                        if (this.isSelected3[j]) {	//如果商品被选中则获取该商品的名称和价格，分行显示
+                            index++;    //记录购物车中的商品序号
+                            index = index < 10 ? '0' + index : index;
+                            selectList += index + "————" + this.product3[j] + " * " + this.isSelected3[j] + ",价值为" + this.price3[j] * parseInt(this.isSelected3[j]) + "<br/>";
+                        }
+                    }
+                    for (var j = 0; j < this.product4.length; j++) {
+                        if (this.isSelected4[j]) {	//如果商品被选中则获取该商品的名称和价格，分行显示
+                            index++;    //记录购物车中的商品序号
+                            index = index < 10 ? '0' + index : index;
+                            selectList += index + "————" + this.product4[j] + " * " + this.isSelected4[j] + ",价值为" + this.price4[j] * parseInt(this.isSelected4[j]) + "<br/>";
+                        }
+                    }
+                    if (selectList == "") {
+                        alert("您的购物车为空，请选购！");
+                    } else {
+                        window.location.href = "shoppingCart.html?value=" + encodeURI(selectList);
+                    }
+                },
+                plus(page, num) {   //page代表页数，page从1开始，num代表第几个商品，num从0开始
+                    switch (num) {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                            if (page == 1) {
+                                var number = ++this.isSelected1[num];
+                                //要使数组中的元素值渲染到页面上，则必须使用Vue.set()方法改变数组的元素值
+                                Vue.set(this.isSelected1, num, number);
+                            } else if (page == 2) {
+                                var number = ++this.isSelected2[num];
+                                Vue.set(this.isSelected2, num, number);
+                            } else if (page == 3) {
+                                var number = ++this.isSelected3[num];
+                                Vue.set(this.isSelected3, num, number);
+                            } else {
+                                var number = ++this.isSelected4[num];
+                                Vue.set(this.isSelected4, num, number);
+                            }
+                            break;
+                    }
+                },
+                subtract(page, num) {     //对应的商品数量减1
+                    switch (num) {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                            if (page == 1) {
+                                if (this.isSelected1[num] == 0) {
+                                    alert("商品数量为0！");
+                                }
+                                else {
+                                    var number = --this.isSelected1[num];
+                                    Vue.set(this.isSelected1, num, number);
+                                }
+                            } else if (page == 2) {
+                                if (this.isSelected2[num] == 0) {
+                                    alert("商品数量为0！");
+                                }
+                                else {
+                                    var number = --this.isSelected2[num];
+                                    Vue.set(this.isSelected2, num, number);
+                                }
+                            } else if (page == 3) {
+                                if (this.isSelected3[num] == 0) {
+                                    alert("商品数量为0！");
+                                }
+                                else {
+                                    var number = --this.isSelected3[num];
+                                    Vue.set(this.isSelected3, num, number);
+                                }
+                            } else if (page == 4) {
+                                if (this.isSelected4[num] == 0) {
+                                    alert("商品数量为0！");
+                                }
+                                else {
+                                    var number = --this.isSelected4[num];
+                                    Vue.set(this.isSelected4, num, number);
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
